@@ -141,6 +141,7 @@ namespace OOP13
             Console.WriteLine();
             Console.Write("Выберите номер детали для замены - ");
             return Console.ReadLine();
+        }
     }
 
     class Warehouse
