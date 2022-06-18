@@ -75,25 +75,25 @@ namespace OOP13
 
             if (int.TryParse(numberDetailString, out numberDetail))
             {
-                if (auto.IsInputCorrect(numberDetail))
+                if (auto.IsPartCar(numberDetail))
                 {
                     Money += auto.MakeRepairs(numberDetail);
                 }
                 else
                 {
-                    IsErrorInput();
+                    FineForInvalidInput();
                 }
             }
             else
             {
-                IsErrorInput();
+                FineForInvalidInput();
             }
         }
 
-        private void IsErrorInput()
+        private void FineForInvalidInput()
         {
             int fine = 10000;
-            _menu.IsErrorInput(fine);
+            _menu.ShowPenaltyMessage(fine);
             Money -= fine;
         }
         
@@ -113,10 +113,10 @@ namespace OOP13
             Console.WriteLine($"На счету вашего автосервиса - {money} денег.");
         }
 
-        internal void IsErrorInput(int fine)
+        internal void ShowPenaltyMessage(int penalty)
         {
             Console.WriteLine();
-            Console.WriteLine($"Не правильный выбор получите штраф - {fine}");
+            Console.WriteLine($"Не правильный выбор получите штраф - {penalty}");
         }
 
         internal void ShowStartGame()
@@ -250,7 +250,7 @@ namespace OOP13
             return payment;
         }
 
-        internal bool IsInputCorrect(int numberDetail)
+        internal bool IsPartCar(int numberDetail)
         {
             bool isCorrect = false;
             string nameDetails = "Деталь_" + numberDetail;
@@ -297,10 +297,10 @@ namespace OOP13
         {
             Random random = new Random();
             PartPrice = random.Next(_minimumRateDetail, _maximumRateDetail);
-            WorkCoste = ProcentCoste(PartPrice);
+            WorkCoste = CalculateCostWork(PartPrice);
         }
 
-        private int ProcentCoste(int partPrace)
+        private int CalculateCostWork(int partPrace)
         {
             Random random = new Random();
             int procent100 = 100;
