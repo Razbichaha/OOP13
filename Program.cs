@@ -24,6 +24,7 @@ namespace OOP13
             Money = 100000;
         }
 
+
         internal void Start()
         {
             bool continueGame = true;
