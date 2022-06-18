@@ -46,7 +46,7 @@ namespace OOP13
                     _menu.ShowBreakdown(breakdownDetails);
                     _menu.ShowMoney(Money);
 
-                    if (auto.ThereBrokenParts() == false)
+                    if (auto.ContinueRepairs() == false)
                     {
                         thereBrokenParts = false;
                     }
@@ -58,7 +58,7 @@ namespace OOP13
         private bool ContinueGame()
         {
             bool continueGame = true;
-            _menu.MessagContinueGame();
+            _menu.ShowMessagContinueGame();
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
 
             if (keyInfo.Key==ConsoleKey.Escape)
@@ -81,16 +81,16 @@ namespace OOP13
                 }
                 else
                 {
-                    ErrorInput();
+                    IsErrorInput();
                 }
             }
             else
             {
-                ErrorInput();
+                IsErrorInput();
             }
         }
 
-        private void ErrorInput()
+        private void IsErrorInput()
         {
             int fine = 10000;
             _menu.IsErrorInput(fine);
@@ -101,7 +101,7 @@ namespace OOP13
 
     class Menu
     {
-        internal void MessagContinueGame()
+        internal void ShowMessagContinueGame()
         {
             Console.WriteLine();
             Console.WriteLine("Хотите продолжить ремонтировать автомобили нажмите Enter");
@@ -222,7 +222,7 @@ namespace OOP13
             return detailBreakdown;
         }
 
-        internal bool ThereBrokenParts()
+        internal bool ContinueRepairs()
         {
             bool thereBrokenParts = true;
 
