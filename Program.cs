@@ -7,54 +7,43 @@ namespace OOP13
     {
         static void Main(string[] args)
         {
-            ProgramCore programCore = new ProgramCore();
-            programCore.StartAutoservis();
+            CarService carService = new();
+            carService.Start();
         }
     }
 
-    class ProgramCore
+    class CarService
     {
-        private Autoservis _autoservis = new Autoservis();
-
-        internal void StartAutoservis()
-        {
-            _autoservis.StartAutoservis();
-            Console.ReadLine();
-        }
-    }
-
-    class Autoservis
-    {
-        internal int Money { get; private set; }
-
         private Warehouse _warehouse = new Warehouse();
         private Menu _menu = new Menu();
 
-        internal Autoservis()
+        internal int Money { get; private set; }
+
+        internal CarService()
         {
             Money = 100000;
         }
 
-        internal void StartAutoservis()
+        internal void Start()
         {
             bool continueGame = true;
 
             while (continueGame)
             {
                 Auto auto = new Auto(_warehouse);
-                List<Detail> BreakdownDetails = auto.GetCarBreakdown();
+                List<Detail> breakdownDetails = auto.GetCarBreakdown();
 
                 _menu.ShowStartGame();
                 _menu.ShowMoney(Money);
-                _menu.ShowBreakdown(BreakdownDetails);
+                _menu.ShowBreakdown(breakdownDetails);
 
                 bool thereBrokenParts = true;
 
                 while (thereBrokenParts)
                 {
                     Repair(auto);
-                    BreakdownDetails = auto.GetCarBreakdown();
-                    _menu.ShowBreakdown(BreakdownDetails);
+                    breakdownDetails = auto.GetCarBreakdown();
+                    _menu.ShowBreakdown(breakdownDetails);
                     _menu.ShowMoney(Money);
 
                     if (auto.ThereBrokenParts() == false)
@@ -84,9 +73,9 @@ namespace OOP13
             string numberDetailString = _menu.SelektDetal();
             int numberDetail = 0;
 
-            if (IsNumber(numberDetailString, ref numberDetail))
+            if (int.TryParse(numberDetailString, out numberDetail))
             {
-                if (auto.InputIsCorrect(numberDetail))
+                if (auto.IsInputCorrect(numberDetail))
                 {
                     Money += auto.MakeRepairs(numberDetail);
                 }
@@ -104,16 +93,10 @@ namespace OOP13
         private void ErrorInput()
         {
             int fine = 10000;
-            _menu.ErrorInput(fine);
+            _menu.IsErrorInput(fine);
             Money -= fine;
         }
         
-        private bool IsNumber(string text, ref int number)
-        {
-            bool isNumber = int.TryParse(text, out number);
-            return isNumber;
-        }
-
     }
 
     class Menu
@@ -130,7 +113,7 @@ namespace OOP13
             Console.WriteLine($"На счету вашего автосервиса - {money} денег.");
         }
 
-        internal void ErrorInput(int fine)
+        internal void IsErrorInput(int fine)
         {
             Console.WriteLine();
             Console.WriteLine($"Не правильный выбор получите штраф - {fine}");
@@ -157,9 +140,7 @@ namespace OOP13
         {
             Console.WriteLine();
             Console.Write("Выберите номер детали для замены - ");
-            string numberDetailString = Console.ReadLine();
-            return numberDetailString;
-        }
+            return Console.ReadLine();
     }
 
     class Warehouse
@@ -180,7 +161,7 @@ namespace OOP13
         internal Detail GetRandomDetail()
         {
             Random random = new Random();
-            int randomNumber = random.Next(/*_minimumDetails*/0, _details.Count);
+            int randomNumber = random.Next(0, _details.Count);
             Detail detail;
 
             if (randomNumber == _minimumDetails)
@@ -268,7 +249,7 @@ namespace OOP13
             return payment;
         }
 
-        internal bool InputIsCorrect(int numberDetail)
+        internal bool IsInputCorrect(int numberDetail)
         {
             bool isCorrect = false;
             string nameDetails = "Деталь_" + numberDetail;
@@ -281,21 +262,6 @@ namespace OOP13
                 }
             }
             return isCorrect;
-        }
-
-        private bool IsRepeat(int[] massiv, int number)
-        {
-            bool isRepeat = false;
-
-            foreach (var item in massiv)
-            {
-                if (item == number)
-                {
-                    isRepeat = true;
-                    break;
-                }
-            }
-            return isRepeat;
         }
 
         private void Create(Warehouse warehouse)
@@ -311,14 +277,14 @@ namespace OOP13
 
     class Detail
     {
-        internal string Name { get; private set; }
-        internal int PartPrice { get; private set; }
-        internal int WorkCoste { get; private set; }
-
         private int _maximumRateDetail = 5000;
         private int _minimumRateDetail = 10;
         private int _maximumCosteProcent = 150;
         private int _minimumCosteProcent = 50;
+
+        internal string Name { get; private set; }
+        internal int PartPrice { get; private set; }
+        internal int WorkCoste { get; private set; }
 
         internal Detail(string name)
         {
